@@ -34,9 +34,15 @@ func (app *app) CreateUsersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	} else {
-		b, s := validators.IsValidUser(payload)
-		if !b {
-			http.Error(w, s, http.StatusBadRequest)
+		isValid, valStr := validators.IsValidUser(payload)
+
+		if !isValid {
+			http.Error(w, valStr, http.StatusBadRequest)
+			return
+		}
+		isDuplicate, dupStr := validators.IsDuplicateUser(payload, users)
+		if isDuplicate {
+			http.Error(w, dupStr, http.StatusBadRequest)
 			return
 		}
 	}
