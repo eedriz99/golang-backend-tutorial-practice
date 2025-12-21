@@ -1,16 +1,14 @@
 package main
 
 import (
-	"BackendDevelopment/tutorial/models"
-	_ "BackendDevelopment/tutorial/models"
 	"fmt"
 	"net/http"
 )
 
-type server struct {
-	port  string
-	debug bool
-}
+//type server struct {
+//	port  string
+//	debug bool
+//}
 
 //	func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 //		switch r.URL.Path {
@@ -50,23 +48,17 @@ type server struct {
 
 func main() {
 
-	user := &models.User{
-		FirstName: "Idris",
-		LastName:  "Akinsola",
-		Email:     "akinsolaidris1999@mail.com",
-		Bio:       "AI/ML enthusiast, backend developer in making.",
-	}
-
-	s := &server{port: ":8080", debug: true}
+	app := &app{port: ":8080", debug: true}
 	mux := http.NewServeMux()
-	srv := &http.Server{Addr: s.port, Handler: mux}
+	srv := &http.Server{Addr: app.port, Handler: mux}
 
-	mux.HandleFunc("GET /users", user.GetUsersHandler)
+	mux.HandleFunc("GET /users", app.GetUsersHandler)
+	mux.HandleFunc("POST /users", app.CreateUsersHandler)
 
 	fmt.Println("Listening on port " + srv.Addr)
 	//err := http.ListenAndServe(srv.Addr, srv)
 	err := srv.ListenAndServe()
-	if err != nil && s.debug {
+	if err != nil && app.debug {
 		panic(err)
 	}
 }
