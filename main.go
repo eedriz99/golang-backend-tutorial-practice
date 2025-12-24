@@ -13,6 +13,7 @@ func main() {
 
 	mux.HandleFunc("GET /users", app.GetUsersHandler)
 	mux.HandleFunc("POST /users", app.CreateUsersHandler)
+	mux.HandleFunc("GET /posts", app.GetPostsHandler)
 
 	fmt.Println("Listening on port " + srv.Addr)
 	//err := http.ListenAndServe(srv.Addr, srv)
