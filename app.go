@@ -14,6 +14,7 @@ type app struct {
 
 // create app methods to perform specific requests.
 var users []models.User
+var posts []models.Post
 
 func (app *app) GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
@@ -49,5 +50,21 @@ func (app *app) CreateUsersHandler(w http.ResponseWriter, r *http.Request) {
 	users = append(users, payload)
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(payload)
+	err = json.NewEncoder(w).Encode(payload)
+}
+
+func (app *app) GetSingleUserHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	
+}
+
+func (app *app) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	err := json.NewEncoder(w).Encode(posts)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	return
 }
