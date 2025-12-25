@@ -1,12 +1,15 @@
 package validators
 
-import "BackendDevelopment/tutorial/models"
+import (
+	"BackendDevelopment/tutorial/models"
+	"errors"
+)
 
-func IsDuplicateUser(u models.User, users []models.User) (bool, string) {
+func IsDuplicateUser(u models.User, users []models.User) error {
 	for _, user := range users {
 		if u.Email == user.Email {
-			return true, "Email address has been taken!"
+			return errors.New("email address has been taken")
 		}
 	}
-	return false, ""
+	return nil
 }

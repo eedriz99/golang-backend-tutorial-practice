@@ -35,15 +35,15 @@ func (app *app) CreateUsersHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	} else {
-		isValid, valStr := validators.IsValidUser(payload)
+		err := validators.IsValidUser(payload)
 
-		if !isValid {
-			http.Error(w, valStr, http.StatusBadRequest)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		isDuplicate, dupStr := validators.IsDuplicateUser(payload, users)
-		if isDuplicate {
-			http.Error(w, dupStr, http.StatusBadRequest)
+		err = validators.IsDuplicateUser(payload, users)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
 	}
@@ -55,7 +55,7 @@ func (app *app) CreateUsersHandler(w http.ResponseWriter, r *http.Request) {
 
 func (app *app) GetSingleUserHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	
+
 }
 
 func (app *app) GetPostsHandler(w http.ResponseWriter, r *http.Request) {
